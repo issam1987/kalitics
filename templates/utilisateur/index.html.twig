@@ -1,0 +1,103 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Utilisateur index{% endblock %}
+
+{% block body %}
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0">Liste des utilisateurs</h1>
+                </div><!-- /.col -->
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">Liste des utilisateurs</li>
+                    </ol>
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+<section class="content">
+    <div class="container-fluid">
+        <!-- Small boxes (Stat box) -->
+        <div class="card">
+    <div class="card-header">
+        <h3 class="card-title"></h3>
+        <div class="card-tools">
+            <a href="{{ path('app_utilisateur_new') }}">
+            <button type="button" class="btn btn-info btn-block btn-flat"><i
+                        class="fa fa-plus"></i> Ajouter utilisateur
+            </button>
+            </a>
+
+        </div>
+
+    </div>
+            <div class="card-body">
+        <table id="example1" class="table table-bordered table-striped" >
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>Prenom</th>
+                <th>Matricule</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for utilisateur in utilisateurs %}
+            <tr id="{{ utilisateur.id }}">
+                <td>{{ utilisateur.id }}</td>
+                <td>{{ utilisateur.nom }}</td>
+                <td>{{ utilisateur.prenom }}</td>
+                <td>{{ utilisateur.matricule }}</td>
+                <td>
+
+                    <a href="{{ path('app_utilisateur_edit', {'id': utilisateur.id}) }}">
+                        <button type="button" class="btn btn-default btn-sm" >
+                            <i class="far fa-edit"></i>
+                        </button></a>
+                    <button type="button" class="btn btn-default btn-sm" onclick="delete_user({{ utilisateur.id }})">
+                        <i class="far fa-trash-alt"></i>
+                    </button>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+            </div>
+
+        </div></div></section>
+
+{% endblock %}
+{% block script %}
+<script>
+
+    function delete_user(id) {
+        var result = confirm("vous etes sure de supprimer cet utilisteur?");
+        if (result) {
+            var rowid = '#' + id;
+            var url="{{ path('app_utilisateur_delete', {'id': ':id'}) }}";
+
+            $.ajax({
+                url: url.replace(':id', id),
+                method: "POST",
+                data: {id: id},
+                success: function (data) {
+                    $("#example1 tbody").find(rowid).remove();
+                },
+                error: function () {
+                    ;alert('error');
+                }
+            });
+        }
+    }
+</script>
+{% endblock %}
