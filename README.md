@@ -12,6 +12,12 @@ __Object Relational Mapper (ORM)__: Doctrine
 ## How to start
 
 ``` bash
+# clone project
+git clone https://github.com/issam1987/kalitics.git
+
+#cd folder
+cd kalitics
+
 # Install dependencies
 composer install
 
